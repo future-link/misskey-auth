@@ -1,0 +1,44 @@
+{
+  "name": "misskey-auth",
+  "version": "1.0.0",
+  "description": "OAuth2 authenticate server of misskey-delta",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tosuke/misskey-auth.git"
+  },
+  "keywords": [
+    "oauth2"
+  ],
+  "author": "tosuke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tosuke/misskey-auth/issues"
+  },
+  "homepage": "https://github.com/Tosuke/misskey-auth#readme",
+  "dependencies": {
+    "koa": "^2.2.0",
+    "koa-pug": "^3.0.0-2",
+    "koa-router": "^7.1.1",
+    "mongoose": "^4.9.7",
+    "pug": "^2.0.0-beta.12",
+    "redis": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.39",
+    "@types/koa-pug": "^3.0.2",
+    "@types/koa-router": "^7.0.22",
+    "@types/mongoose": "^4.7.11",
+    "@types/redis": "^0.12.36",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.3.0",
+    "gulp-pug": "^3.3.0",
+    "gulp-tslint": "^8.0.0",
+    "gulp-typescript": "^3.1.6",
+    "tslint": "^5.1.0",
+    "typescript": "^2.3.2"
+  }
+}
