@@ -17,12 +17,14 @@ async function errorHandler(ctx: koa.Context, next) {
   } catch (e) {
     if (e instanceof httpErrors.HttpError) {
       ctx.status = e.status;
-      Object.assign(ctx.response.headers, e.headers || {});
       ctx.body = {
         error: e.message,
       };
     } else {
-      throw e;
+      ctx.status = 500;
+      ctx.body = {
+        error: e.message || "Internal Server Error",
+      };
     }
   }
 }
