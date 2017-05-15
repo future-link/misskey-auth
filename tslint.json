@@ -10,6 +10,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": [
       false
-    ]
+    ],
+    "no-var-requires": false
   }
 }

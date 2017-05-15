@@ -7,11 +7,12 @@ interface Endpoint {
 }
 
 const endpoints: Endpoint[] = [
-  /*{
+  {
     method: "POST",
     path: "/apps/create",
     file: "/apps/create",
   },
+  /*
   {
     method: "POST",
     path: "/apps/destroy",
