@@ -1,5 +1,8 @@
-import * as mongoose from "mongoose";
+import mongoose = require("mongoose");
 import config from "./config";
+
+// use native promise
+mongoose.Promise = Promise;
 
 let opts: object|undefined;
 if (config.mongo.options !== undefined) {

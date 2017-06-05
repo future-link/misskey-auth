@@ -5,7 +5,7 @@ const tslint = require("gulp-tslint");
 const project = ts.createProject("tsconfig.json");
 
 gulp.task("watch", () => {
-  gulp.watch(["./src/**/*.ts"], ["build"]);
+  gulp.watch(["./src/**/*.ts"], ["build:ts"]);
 });
 
 gulp.task("build", ["lint", "build:ts"]);

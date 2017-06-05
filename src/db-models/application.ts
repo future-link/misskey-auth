@@ -1,9 +1,10 @@
 import * as mongoose from "mongoose";
 
 const applicationSchema = new mongoose.Schema({
-  createdAt: String,
-  userId: String,
   name: String,
+  userId: String,
+  secret: String,
+  createdAt: String,
   description: {
     type: String,
     default: "",
@@ -19,9 +20,11 @@ const applicationSchema = new mongoose.Schema({
 });
 
 export interface ApplicationDocument extends mongoose.Document {
-  createdAt: string;
-  userId: string;
+  _id: string;
   name: string;
+  userId: string;
+  secret: string;
+  createdAt: string;
   description: string;
   callbackURL: string|undefined;
   isPublicClient: boolean;
