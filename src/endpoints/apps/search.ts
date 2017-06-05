@@ -7,7 +7,7 @@ export default async function search(ctx: koa.Context) {
   const userId = getParamAsString(body, "user-id");
   const list = await apps.search(userId);
   ctx.body = list.map((a) => {
-    delete (a as any)._doc.secret;
+    delete a.secret;
     return a;
   });
 }

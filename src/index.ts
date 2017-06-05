@@ -49,21 +49,13 @@ async function responseFormatter(ctx: koa.Context, next) {
   };
 
   if (typeof(body) === "object") {
-    if (body._doc === undefined) {
-      body = f(body);
-    } else {
-      body = f(body._doc);
-    }
+    body = f(body);
   }
 
   if (body instanceof Array) {
     body = body.map((a) => {
       if (typeof(a) === "object") {
-        if (a._doc === undefined) {
-          return f(a);
-        } else {
-          return f(Object.assign({}, a._doc));
-        }
+        return f(a);
       } else {
         return a;
       }

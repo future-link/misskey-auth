@@ -27,6 +27,6 @@ export default async function show(ctx: koa.Context) {
     return;
   }
 
-  delete (app as any)._doc.secret;
+  delete app.secret;
   ctx.body = app;
 }
