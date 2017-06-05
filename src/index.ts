@@ -28,7 +28,6 @@ async function errorHandler(ctx: koa.Context, next) {
       ctx.body = {
         error: e.message || "Internal Server Error",
       };
-      throw e;
     }
   }
 }

@@ -14,20 +14,11 @@ export default async function(ctx: koa.Context) {
   const callbackURL: string|undefined = body.callbackURL;
 
   const user: {id: string} = await getUser(userName, password);
-
-  try {
-    ctx.body = await apps.create(
-      appName,
-      user.id,
-      description,
-      callbackURL,
-    );
-    ctx.status = 201;
-  } catch (err) {
-    if (err instanceof Error) {
-      throw createError(400, err.message);
-    } else {
-      throw err;
-    }
-  }
+  ctx.body = await apps.create(
+    appName,
+    user.id,
+    description,
+    callbackURL,
+  );
+  ctx.status = 201;
 }
