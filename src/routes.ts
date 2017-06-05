@@ -12,7 +12,6 @@ const endpoints: Endpoint[] = [
     path: "/apps/create",
     file: "/apps/create",
   },
-  /*
   {
     method: "POST",
     path: "/apps/destroy",
@@ -22,7 +21,7 @@ const endpoints: Endpoint[] = [
     method: "POST",
     path: "/apps/show",
     file: "/apps/show",
-  },*/
+  },
 
   {
     method: "GET",
