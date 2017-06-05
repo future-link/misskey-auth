@@ -25,7 +25,7 @@ class ApplicationModel {
     app.callbackURL = callbackURL;
     app.isPublicClient = isPublicClient;
 
-    return (await app.save() as any)._doc;
+    return (await app.save()).toObject() as ApplicationDocument;
   }
 
   public async destroy(appId: string, appSecret: string): Promise<void> {
@@ -45,11 +45,11 @@ class ApplicationModel {
     if (app == null) {
       throw createError(404, "Application not found");
     }
-    return (app as any)._doc;
+    return app.toObject() as ApplicationDocument;
   }
 
   public async search(userId: string): Promise<ApplicationDocument[]> {
-    return (await Application.find({userId})).map((a) => (a as any)._doc);
+    return (await Application.find({userId})).map((a) => a.toObject() as ApplicationDocument);
   }
 }
 
