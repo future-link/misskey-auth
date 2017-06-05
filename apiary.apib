@@ -1,0 +1,87 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# misskey-auth
+
+A misskey authz server api
+
+## Create a New Application [/apps/create]
+Create a new application using user's credential.
+
+### POST [POST]
+
++ Request (application/json)
+    + Attributes
+        + `screen-name`: john (string, required) - a user's name
+        + `password`: password (string, required) - a user's password
+        + `app-name`: test (string, required) - an application's name
+        + `description`: description (string, required) - an application's description
+        + `callback-url`: http://url.com/path/to/callback (string, optional) - a callback URL
+
++ Response 201 (application/json)
+    + Attributes
+        + `name`: test (string, required) - an application's name
+        + `description`: description (string, required) - an application's description
+        + `isPublicClient`: false (boolean, required)
+        + `createdAt`: `2017-06-05T09:45:06.537Z` (string, required) - a timestamp which an application created
+        + `userId`: 592f9a3d44c65921e47469c7 (string, required) - an id of a user who created an application
+        + `id` : 59352822ecdf2b257d4c7949 (string, required) - an application's id(app-id)
+        + `secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, required) - an application-secret(app-secret)
+
+
+## Destroy an Application [/apps/destroy]
+
+### POST [POST]
+
++ Request (application/json)
+    + Attributes
+        + `app-id`: 59352822ecdf2b257d4c7949 (string, required) - an application's id
+        + `app-secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, required) - an application-secret
+        
++ Response 200 (application/json)
+
+
+## Show application's information [/apps/show]
+Show application's information.
+if you want to get `secret`, you need to authorize using `app-secret` or user's credential.
+
+### POST [POST]
+
++ Request (application/json)
+    + Attributes
+        + `app-id`: 59352822ecdf2b257d4c7949 (string, required) - an application's id
+        + One of
+            + `app-secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string) - an application-secret
+            + Properties
+                + `screen-name`: john (string) - a user's name
+                + `password`: password (string)- a user's password
+
++ Response 200 (application/json)
+    + Attributes
+        + `name`: test (string, required) - an application's name
+        + `description`: description (string, required) - an application's description
+        + `isPublicClient`: false (boolean, required)
+        + `createdAt`: `2017-06-05T09:45:06.537Z` (string, required) - a timestamp which an application created
+        + `userId`: 592f9a3d44c65921e47469c7 (string, required) - an id of a user who created an application
+        + `id` : 59352822ecdf2b257d4c7949 (string, required) - an application's id(app-id)
+        + `secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, required) - an application-secret(app-secret)
+
+
+## Search applications [/apps/search]
+Search applications using a user's id.
+
+### POST [POST]
+
++ Request (application/json)
+    + Attributes
+        + `user-id`: 592f9a3d44c65921e47469c7 (string, required) - a user's id
+        
++ Response 200 (application/json)
+    + Attributes (array)
+        + (object)
+            + `name`: test (string, required) - an application's name
+            + `description`: description (string, required) - an application's description
+            + `isPublicClient`: false (boolean, required)
+            + `createdAt`: `2017-06-05T09:45:06.537Z` (string, required) - a timestamp which an application created
+            + `userId`: 592f9a3d44c65921e47469c7 (string, required) - an id of a user who created an application
+            + `id` : 59352822ecdf2b257d4c7949 (string, required) - an application's id(app-id)
