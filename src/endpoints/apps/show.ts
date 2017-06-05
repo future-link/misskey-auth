@@ -8,7 +8,7 @@ export default async function show(ctx: koa.Context) {
   const body = ctx.request.body;
   const appId = getParamAsString(body, "app-id");
 
-  let app = await apps.show(appId);
+  const app = await apps.show(appId);
 
   if (body["app-secret"] !== undefined) {
     const appSecret = getParamAsString(body, "app-secret");
@@ -24,9 +24,9 @@ export default async function show(ctx: koa.Context) {
     const password = getParamAsString(body, "password");
     await getUser(userName, password);
     ctx.body = app;
+    return;
   }
 
-  app = Object.assign({}, app);
-  delete app.secret;
+  delete (app as any)._doc.secret;
   ctx.body = app;
 }

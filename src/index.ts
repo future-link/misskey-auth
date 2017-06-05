@@ -28,6 +28,7 @@ async function errorHandler(ctx: koa.Context, next) {
       ctx.body = {
         error: e.message || "Internal Server Error",
       };
+      throw e;
     }
   }
 }
@@ -48,18 +49,26 @@ async function responseFormatter(ctx: koa.Context, next) {
   };
 
   if (typeof(body) === "object") {
-    body = Object.assign({}, body._doc); // clone
-    body = f(body);
+    if (body._doc === undefined) {
+      body = f(body);
+    } else {
+      body = f(body._doc);
+    }
   }
 
   if (body instanceof Array) {
     body = body.map((a) => {
       if (typeof(a) === "object") {
-        return f(Object.assign({}, a._doc));
+        if (a._doc === undefined) {
+          return f(a);
+        } else {
+          return f(Object.assign({}, a._doc));
+        }
       } else {
         return a;
       }
     });
   }
+
   ctx.body = body;
 }

@@ -47,6 +47,10 @@ class ApplicationModel {
     }
     return app;
   }
+
+  public async search(userId: string): Promise<ApplicationDocument[]> {
+    return await Application.find({userId});
+  }
 }
 
 const model = new ApplicationModel();

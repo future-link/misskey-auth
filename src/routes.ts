@@ -22,6 +22,11 @@ const endpoints: Endpoint[] = [
     path: "/apps/show",
     file: "/apps/show",
   },
+  {
+    method: "POST",
+    path: "/apps/search",
+    file: "/apps/search",
+  },
 
   {
     method: "GET",
