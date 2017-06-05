@@ -2,6 +2,7 @@ import * as koa from "koa";
 import * as bodyParser from "koa-bodyparser";
 import router from "./routes";
 import * as httpErrors from "http-errors";
+import { systemLogger, errorLogger } from "./logger";
 
 const app = new koa();
 app
@@ -24,11 +25,14 @@ async function errorHandler(ctx: koa.Context, next) {
         error: e.message,
       };
     } else {
+      if (e instanceof Error) {
+        errorLogger.error(e.stack || `${e.name}: ${e.message}`);
+      }
+
       ctx.status = 500;
       ctx.body = {
         error: e.message || "Internal Server Error",
       };
-      throw e;
     }
   }
 }

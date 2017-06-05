@@ -1,4 +1,5 @@
 /node_modules
 /dest
+/logs
 /.vscode
 /yarn.lock

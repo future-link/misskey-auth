@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as log4js from "log4js";
 
 const configDirName: string = ".misskey";
 const configFileName: string = "auth.json";
@@ -18,6 +19,7 @@ export interface Config {
       password: string;
     }
   };
+  logger: log4js.IConfig;
   apiServer: {
     passkey: string;
     ip: string;

@@ -1,4 +1,6 @@
+import * as koa from "koa";
 import * as Router from "koa-router";
+import { accessLogger } from "./logger";
 
 interface Endpoint {
   method: "GET"|"POST";
@@ -39,13 +41,17 @@ const router = new Router();
 endpoints.forEach((a) => {
   let handler = require(`./endpoints${a.file}`);
   handler = handler.default || handler;
+  const handlerFunction = async (ctx: koa.Context, next) => {
+    accessLogger.info(`${a.method} ${a.path}`);
+    await handler(ctx);
+  };
 
   switch (a.method) {
     case "GET":
-      router.get(a.path, handler);
+      router.get(a.path, handlerFunction);
       break;
     case "POST":
-      router.post(a.path, handler);
+      router.post(a.path, handlerFunction);
       break;
   }
 });
