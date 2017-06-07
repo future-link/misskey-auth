@@ -16,12 +16,9 @@ export default async function getUser(screenName: string, password: string): Pro
 
   const url = `http://${config.apiServer.ip}:${config.apiServer.port}/login`;
 
-  let user: any;
-  try {
-    user = JSON.parse(await request(url, options));
-  } catch (err) {
-    throw createError(401); // きゅーそくせんこー
-  }
+  const user = await request(url, options)
+                      .then((a) => JSON.parse(a))
+                      .catch((e) => Promise.reject(createError(401))); // きゅーそくせんこー
 
   return user;
 }

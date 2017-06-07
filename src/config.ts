@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as fs from "fs";
 import * as log4js from "log4js";
 
 const configDirName: string = ".misskey";
@@ -9,9 +10,18 @@ const homeDir = process.env[
 ];
 const configPath = path.join(homeDir, configDirName, configFileName);
 const config = require(configPath) as Config;
+config.jws.publicKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.publicKeyFile), "utf8");
+config.jws.secretKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.secretKeyFile), "utf8");
 export default config;
 
 export interface Config {
+  jws: {
+    algorithm: string;
+    secretKey: string;
+    secretKeyFile: string;
+    publicKey: string;
+    publicKeyFile: string;
+  };
   mongo: {
     uri: string;
     options?: {

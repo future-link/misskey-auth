@@ -22,3 +22,6 @@ mongoose.connect(config.mongo.uri, opts, (err) => {
 
 import application from "./db-models/application";
 export const Application = application;
+
+import acccessToken from "./db-models/access-token";
+export const AccessToken = acccessToken;

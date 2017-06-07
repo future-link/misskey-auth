@@ -31,6 +31,12 @@ const endpoints: Endpoint[] = [
   },
 
   {
+    method: "POST",
+    path: "/tokens/create",
+    file: "/tokens/create",
+  },
+
+  {
     method: "GET",
     path: "/test",
     file: "/test",
