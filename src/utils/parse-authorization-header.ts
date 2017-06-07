@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import { ResponceError } from "./error";
 
 export interface AuthorizationHeader {
   kind: "basic"|"bearer";
@@ -15,13 +15,13 @@ export interface BearerAuthorizationHeader {
 }
 
 export default function parseAutorizationHeader(header: string): AuthorizationHeader {
-  if (/^\s*[\w\-]\s+[^\s]+\s*$/.test(header)) {
+  if (/^\s*[\w\-]+\s+[^\s]+\s*$/.test(header)) {
     const parts = header.split(" ").map((a) => a.trim());
     const scheme = parts[0].toLowerCase();
     const data = parts[1];
     switch (scheme) {
       case "basic":
-        const [id, secret] = new Buffer(data, "base64").toString("utf8");
+        const [id, secret] = new Buffer(data, "base64").toString("utf8").split(":");
         return {
           kind: "basic",
           doc: {
@@ -37,9 +37,9 @@ export default function parseAutorizationHeader(header: string): AuthorizationHe
         };
 
       default:
-        throw createError(401, "Invalid authorization scheme");
+        throw new ResponceError("invalid_request", `scheme '${scheme} is unsupported`).setStatus(401);
     }
   } else {
-    throw createError(401);
+    throw new ResponceError("invalid_request", "invalid header");
   }
 }

@@ -1,9 +1,9 @@
-import * as createError from "http-errors";
+import { ResponceError, ErrorID } from "./error";
 
-export function getParamAsString(body: object, name: string, error?: string): string {
+export function getParamAsString(body: object, name: string, error?: ErrorID): string {
   const param = body[name];
   if (typeof(param) !== "string") {
-    throw createError(400, error || `'${name}' is required.`);
+    throw new ResponceError(error || "invalid_request", `'${name}' is required`);
   }
   return param;
 }

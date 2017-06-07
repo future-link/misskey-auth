@@ -1,7 +1,7 @@
 import { AccessToken } from "../db";
 import { AccessTokenDocument } from "../db-models/access-token";
 import Application from "./application";
-import * as createError from "http-errors";
+import { ResponceError } from "../utils/error";
 import getUser from "../utils/get-user";
 import config from "../config";
 import jws = require("jws");
@@ -14,19 +14,19 @@ class AccessTokenModel {
     appSecret: string,
   ): Promise<AccessTokenDocument> {
     const app = await Application.show(appId).catch(
-      (err) => Promise.reject(createError(400, "invalid_request")),
+      (err) => Promise.reject(new ResponceError("invalid_client", "invalid client_id")),
     );
 
     // Is app 'confidential' client?
     if (app.isPublicClient) {
-      throw createError(400, "invalid_client");
+      throw new ResponceError("unauthorized_client", "client must be 'confidential' on 'password' grant");
     }
     if (app.secret !== appSecret) {
-      throw createError(400, "unauthorized_client");
+      throw new ResponceError("unauthorized_client", "invalid client_secret");
     }
 
     const user: {id: string} = await getUser(username, password).catch(
-      (e) => Promise.reject(createError(400, "invalid_grant")),
+      (e) => Promise.reject(new ResponceError("invalid_grant", "invalid credentials")),
     );
 
     return await this.create(user.id, appId);
