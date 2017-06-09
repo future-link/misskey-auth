@@ -37,7 +37,8 @@ export class ResponceError extends Error {
     }
   }
 
-  public setStatus(code: number) {
+  public setStatus(code: number): ResponceError {
     this.statusCode = code;
+    return this;
   }
 }
