@@ -1,5 +1,5 @@
 import * as request from "request-promise-native";
-import { ResponceError } from "./error";
+import { ResponseError } from "./error";
 import config from "../config";
 
 export default async function getUser(screenName: string, password: string): Promise<any> {
@@ -19,7 +19,7 @@ export default async function getUser(screenName: string, password: string): Pro
   const user = await request(url, options)
                       .then((a) => JSON.parse(a))
                       .catch((e) => Promise.reject(
-                        new ResponceError("invalid_request", "invalid credentials").setStatus(401), // きゅーそくせんこー
+                        new ResponseError("invalid_request", "invalid credentials").setStatus(401), // きゅーそくせんこー
                       ));
 
   return user;

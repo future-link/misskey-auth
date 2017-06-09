@@ -1,7 +1,7 @@
 import { Application } from "../db";
 import { ApplicationDocument } from "../db-models/application";
 import * as crypto from "crypto";
-import { ResponceError } from "../utils/error";
+import { ResponseError } from "../utils/error";
 
 class ApplicationModel {
   public async create(
@@ -12,7 +12,7 @@ class ApplicationModel {
     isPublicClient: boolean = false,
   ): Promise<ApplicationDocument> {
     if ((await Application.findOne({name: appName, userId})) != null) {
-      throw new ResponceError("invalid_request", "you have already registered same application");
+      throw new ResponseError("invalid_request", "you have already registered same application");
     }
 
     const app = new Application();
@@ -31,10 +31,10 @@ class ApplicationModel {
   public async destroy(appId: string, appSecret: string): Promise<void> {
     const app = await Application.findById(appId);
     if (app == null) {
-      throw new ResponceError("not_found", "application not found");
+      throw new ResponseError("not_found", "application not found");
     }
     if (app.secret !== appSecret) {
-      throw new ResponceError("invalid_request", "invalid secret");
+      throw new ResponseError("invalid_request", "invalid secret");
     }
 
     await Application.remove({_id: appId});
@@ -43,7 +43,7 @@ class ApplicationModel {
   public async show(id: string): Promise<ApplicationDocument> {
     const app = await Application.findById(id);
     if (app == null) {
-      throw new ResponceError("not_found", "application not found");
+      throw new ResponseError("not_found", "application not found");
     }
     return app.toObject() as ApplicationDocument;
   }

@@ -8,7 +8,7 @@ export type ErrorID =
   "unsupported_grant_type"|
   "internal_error";
 
-export class ResponceError extends Error {
+export class ResponseError extends Error {
   public error: ErrorID;
   public statusCode: number;
   public description: string;
@@ -37,7 +37,7 @@ export class ResponceError extends Error {
     }
   }
 
-  public setStatus(code: number): ResponceError {
+  public setStatus(code: number): ResponseError {
     this.statusCode = code;
     return this;
   }

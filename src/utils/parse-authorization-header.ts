@@ -1,4 +1,4 @@
-import { ResponceError } from "./error";
+import { ResponseError } from "./error";
 
 export interface AuthorizationHeader {
   kind: "basic"|"bearer";
@@ -37,9 +37,9 @@ export default function parseAutorizationHeader(header: string): AuthorizationHe
         };
 
       default:
-        throw new ResponceError("invalid_request", `scheme '${scheme} is unsupported`).setStatus(401);
+        throw new ResponseError("invalid_request", `scheme '${scheme} is unsupported`).setStatus(401);
     }
   } else {
-    throw new ResponceError("invalid_request", "invalid header");
+    throw new ResponseError("invalid_request", "invalid header");
   }
 }

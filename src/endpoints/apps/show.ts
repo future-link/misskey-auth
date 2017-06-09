@@ -1,5 +1,5 @@
 import * as koa from "koa";
-import { ResponceError } from "../../utils/error";
+import { ResponseError } from "../../utils/error";
 import getUser from "../../utils/get-user";
 import { getParamAsString } from "../../utils/get-param";
 import apps from "../../models/application";
@@ -16,7 +16,7 @@ export default async function show(ctx: koa.Context) {
       ctx.body = app;
       return;
     } else {
-      throw new ResponceError("invalid_request", "invalid secret").setStatus(401);
+      throw new ResponseError("invalid_request", "invalid secret").setStatus(401);
     }
   }
   if (body["screen-name"] !== undefined || body.password !== undefined) {

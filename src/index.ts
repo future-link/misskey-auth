@@ -1,7 +1,7 @@
 import * as koa from "koa";
 import * as bodyParser from "koa-bodyparser";
 import router from "./routes";
-import { ResponceError } from "./utils/error";
+import { ResponseError } from "./utils/error";
 import { systemLogger, errorLogger } from "./logger";
 
 const app = new koa();
@@ -19,7 +19,7 @@ async function errorHandler(ctx: koa.Context, next) {
   try {
     await next();
   } catch (e) {
-    if (e instanceof ResponceError) {
+    if (e instanceof ResponseError) {
       ctx.status = e.statusCode;
       ctx.body = {
         error: e.error,

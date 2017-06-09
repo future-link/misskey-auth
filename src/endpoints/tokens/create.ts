@@ -1,5 +1,5 @@
 import * as koa from "koa";
-import { ResponceError } from "../../utils/error";
+import { ResponseError } from "../../utils/error";
 import parseAuthHeader, { BasicAuthorizationHeader } from "../../utils/parse-authorization-header";
 import { getParamAsString } from "../../utils/get-param";
 import mapErr from "../../utils/map-err";
@@ -14,7 +14,7 @@ export default async function create(ctx: koa.Context) {
       return;
 
     default:
-      throw new ResponceError("unsupported_grant_type", `'${grantType}' is unsupported`);
+      throw new ResponseError("unsupported_grant_type", `'${grantType}' is unsupported`);
   }
 }
 
@@ -23,10 +23,10 @@ async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
     if (ctx.header.authorization !== undefined) {
       const parsed = mapErr(
         () => parseAuthHeader(ctx.header.authorization),
-        (err: ResponceError) => {
+        (err: ResponseError) => {
           if (err.description !== "invalid header") {
             ctx.response.header["WWW-Authenticate"] = `Basic realm="SECRET AREA"`;
-            return new ResponceError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
+            return new ResponseError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
           } else {
             return err;
           }
@@ -36,7 +36,7 @@ async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
         return parsed.doc as BasicAuthorizationHeader;
       } else {
         ctx.response.header["WWW-Authenticate"] = `Basic realm="SECRET AREA"`;
-        throw new ResponceError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
+        throw new ResponseError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
       }
     }
 

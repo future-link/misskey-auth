@@ -1,9 +1,9 @@
-import { ResponceError, ErrorID } from "./error";
+import { ResponseError, ErrorID } from "./error";
 
 export function getParamAsString(body: object, name: string, error?: ErrorID): string {
   const param = body[name];
   if (typeof(param) !== "string") {
-    throw new ResponceError(error || "invalid_request", `'${name}' is required`);
+    throw new ResponseError(error || "invalid_request", `'${name}' is required`);
   }
   return param;
 }
