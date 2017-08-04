@@ -9,7 +9,7 @@ class ApplicationModel {
     userId: string,
     description: string,
     callbackURL: string|undefined,
-    isPublicClient: boolean = false,
+    isPublicClient: boolean = true,
   ): Promise<ApplicationDocument> {
     if ((await Application.findOne({name: appName, userId})) != null) {
       throw new ResponseError("invalid_request", "you have already registered same application");
