@@ -20,13 +20,17 @@ export default async function create(ctx: koa.Context) {
 
 async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
   const { id: clientId, secret: clientSecret } = (() => {
+    const schemeError = () => {
+      ctx.response.header["WWW-Authenticate"] = `Basic realm="SECRET AREA"`;
+      return new ResponseError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
+    };
+
     if (ctx.header.authorization !== undefined) {
       const parsed = mapErr(
         () => parseAuthHeader(ctx.header.authorization),
         (err: ResponseError) => {
           if (err.description !== "invalid header") {
-            ctx.response.header["WWW-Authenticate"] = `Basic realm="SECRET AREA"`;
-            return new ResponseError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
+            return schemeError();
           } else {
             return err;
           }
@@ -35,8 +39,7 @@ async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
       if (parsed.kind === "basic") {
         return parsed.doc as BasicAuthorizationHeader;
       } else {
-        ctx.response.header["WWW-Authenticate"] = `Basic realm="SECRET AREA"`;
-        throw new ResponseError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
+        throw schemeError();
       }
     }
 
