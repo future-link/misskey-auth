@@ -1,11 +1,11 @@
 import * as koa from "koa";
 import { ResponseError } from "../../utils/error";
 import parseAuthHeader, { BasicAuthorizationHeader } from "../../utils/parse-authorization-header";
-import { getParamAsString } from "../../utils/get-param";
+import { getParamSource, getParamAsString } from "../../utils/get-param";
 import tokens from "../../models/token";
 
 export default async function create(ctx: koa.Context) {
-  const grantType = getParamAsString(ctx.request.body, "grant_type");
+  const grantType = getParamAsString(getParamSource(ctx), "grant_type");
 
   switch (grantType) {
     case "password":
@@ -37,16 +37,18 @@ async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
           }
         });
     } else {
-      const body = ctx.request.body;
-      const id     = getParamAsString(body, "client_id");
-      const secret = getParamAsString(body, "client_secret");
+      // Client credectials MUST NOT be included in the request URI,
+      // see https://tools.ietf.org/html/rfc6749#section-2.3.1.
+      const source = ctx.request.body || {};
+      const id     = getParamAsString(source, "client_id");
+      const secret = getParamAsString(source, "client_secret");
       return { id, secret };
     }
   })();
 
-  const body = ctx.request.body;
-  const username = getParamAsString(body, "username");
-  const password = getParamAsString(body, "password");
+  const source = getParamSource(ctx);
+  const username = getParamAsString(source, "username");
+  const password = getParamAsString(source, "password");
 
   const token = await tokens.createUsingPassword(username, password, clientId, clientSecret);
   const signedToken = tokens.sign(token);
