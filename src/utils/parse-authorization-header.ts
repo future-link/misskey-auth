@@ -14,7 +14,7 @@ export interface BearerAuthorizationHeader {
   token: string;
 }
 
-export default function parseAutorizationHeader(header: string): AuthorizationHeader {
+export default async function parseAutorizationHeader(header: string): Promise<AuthorizationHeader> {
   if (/^\s*[\w\-]+\s+[^\s]+\s*$/.test(header)) {
     const parts = header.split(" ").map((a) => a.trim());
     const scheme = parts[0].toLowerCase();

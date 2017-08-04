@@ -2,7 +2,6 @@ import * as koa from "koa";
 import { ResponseError } from "../../utils/error";
 import parseAuthHeader, { BasicAuthorizationHeader } from "../../utils/parse-authorization-header";
 import { getParamAsString } from "../../utils/get-param";
-import mapErr from "../../utils/map-err";
 import tokens from "../../models/token";
 
 export default async function create(ctx: koa.Context) {
@@ -19,34 +18,30 @@ export default async function create(ctx: koa.Context) {
 }
 
 async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
-  const { id: clientId, secret: clientSecret } = (() => {
+  const { id: clientId, secret: clientSecret } = await (async () => {
     const schemeError = () => {
       ctx.response.header["WWW-Authenticate"] = `Basic realm="SECRET AREA"`;
       return new ResponseError("invalid_client", "scheme must be 'BASIC'").setStatus(401);
     };
 
     if (ctx.header.authorization !== undefined) {
-      const parsed = mapErr(
-        () => parseAuthHeader(ctx.header.authorization),
-        (err: ResponseError) => {
-          if (err.description !== "invalid header") {
-            return schemeError();
+      return await parseAuthHeader(ctx.header.authorization)
+        .catch((err: ResponseError) => {
+          throw err.description !== "invalid header" ? schemeError() : err;
+        })
+        .then((res) => {
+          if (res.kind === "basic") {
+            return res.doc as BasicAuthorizationHeader;
           } else {
-            return err;
+            throw schemeError();
           }
-        },
-      );
-      if (parsed.kind === "basic") {
-        return parsed.doc as BasicAuthorizationHeader;
-      } else {
-        throw schemeError();
-      }
+        });
+    } else {
+      const body = ctx.request.body;
+      const id     = getParamAsString(body, "client_id");
+      const secret = getParamAsString(body, "client_secret");
+      return { id, secret };
     }
-
-    const body = ctx.request.body;
-    const id     = getParamAsString(body, "client_id");
-    const secret = getParamAsString(body, "client_secret");
-    return { id, secret };
   })();
 
   const body = ctx.request.body;
