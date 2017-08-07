@@ -9,7 +9,7 @@ export default async function create(ctx: koa.Context) {
 
   switch (grantType) {
     case "password":
-      await resourceOwnerPasswordCredentialGrant(ctx);
+      ctx.body = await resourceOwnerPasswordCredentialGrant(ctx);
       return;
 
     default:
@@ -17,7 +17,12 @@ export default async function create(ctx: koa.Context) {
   }
 }
 
-async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
+interface TokenResponce {
+  access_token: string;
+  token_type: string;
+}
+
+async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context): Promise<TokenResponce> {
   const { id: clientId, secret: clientSecret } = await (async () => {
     const schemeError = () => {
       ctx.response.header["WWW-Authenticate"] = `Basic realm="SECRET AREA"`;
@@ -53,7 +58,7 @@ async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context) {
   const token = await tokens.createUsingPassword(username, password, clientId, clientSecret);
   const signedToken = tokens.sign(token);
 
-  ctx.body = {
+  return {
     access_token: signedToken,
     token_type: "bearer",
   };

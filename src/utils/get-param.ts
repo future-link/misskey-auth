@@ -2,9 +2,11 @@ import { ResponseError, ErrorID } from "./error";
 import * as koa from "koa";
 
 export function getParamSource(ctx: koa.Context): object {
-  const query = ctx.request.query || {};
-  const body = ctx.request.body || {};
-  return Object.assign(body, query);
+  if (ctx.method === "GET") {
+    return ctx.request.query || {};
+  } /* POST */ else {
+    return ctx.request.body || {};
+  }
 }
 
 export function getParamAsString(source: object, name: string, error?: ErrorID): string {
