@@ -9,6 +9,7 @@ app
   .use(errorHandler)
   .use(responseFormatter)
   .use(bodyParser())
+  .use(contentChecker)
   .use(router.routes())
   .use(router.allowedMethods({
     throw: true,
@@ -69,4 +70,12 @@ async function responseFormatter(ctx: koa.Context, next) {
   }
 
   ctx.body = body;
+}
+
+async function contentChecker(ctx: koa.Context, next) {
+  const contentType = ctx.header["content-type"];
+  if (contentType !== "application/json" && contentType !== "application/x-www-urlencoded") {
+    throw new ResponseError("invalid_request", "invalid content type");
+  }
+  await next();
 }
