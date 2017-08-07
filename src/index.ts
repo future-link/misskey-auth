@@ -9,6 +9,7 @@ app
   .use(errorHandler)
   .use(responseFormatter)
   .use(bodyParser())
+  .use(contentChecker)
   .use(router.routes())
   .use(router.allowedMethods({
     throw: true,
@@ -69,4 +70,17 @@ async function responseFormatter(ctx: koa.Context, next) {
   }
 
   ctx.body = body;
+}
+
+async function contentChecker(ctx: koa.Context, next) {
+  const contentType: string|undefined = ctx.header["content-type"];
+  if (ctx.request.method !== "POST") {
+    await next();
+    return;
+  }
+  if (contentType === "application/json" || contentType === "application/x-www-form-urlencoded") {
+    await next();
+    return;
+  }
+  throw new ResponseError("invalid_request", "invalid content type");
 }

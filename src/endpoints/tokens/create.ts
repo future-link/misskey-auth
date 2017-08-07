@@ -44,6 +44,7 @@ async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context): Promise<T
     } else {
       // Client credectials MUST NOT be included in the request URI,
       // see https://tools.ietf.org/html/rfc6749#section-2.3.1.
+      // tslint:disable-next-line:no-shadowed-variable
       const source = ctx.request.body || {};
       const id     = getParamAsString(source, "client_id");
       const secret = getParamAsString(source, "client_secret");

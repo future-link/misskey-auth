@@ -7,7 +7,8 @@ const configFileName: string = "auth.json";
 
 const homeDir = process.env[
   process.platform === "win32" ? "USERPROFILE" : "HOME"
-];
+] as string;
+
 const configPath = path.join(homeDir, configDirName, configFileName);
 const config = require(configPath) as Config;
 config.jws.publicKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.publicKeyFile), "utf8");
