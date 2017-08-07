@@ -73,9 +73,14 @@ async function responseFormatter(ctx: koa.Context, next) {
 }
 
 async function contentChecker(ctx: koa.Context, next) {
-  const contentType = ctx.header["content-type"];
-  if (contentType !== "application/json" && contentType !== "application/x-www-urlencoded") {
-    throw new ResponseError("invalid_request", "invalid content type");
+  const contentType: string|undefined = ctx.header["content-type"];
+  if (ctx.request.method !== "POST") {
+    await next();
+    return;
   }
-  await next();
+  if (contentType === "application/json" || contentType === "application/x-www-form-urlencoded") {
+    await next();
+    return;
+  }
+  throw new ResponseError("invalid_request", "invalid content type");
 }
