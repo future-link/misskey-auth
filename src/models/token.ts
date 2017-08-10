@@ -55,3 +55,10 @@ export function sign(token: AccessTokenDocument): string {
     secret: config.jws.secretKey,
   });
 }
+
+export async function check(token: string): Promise<boolean> {
+  const doc = await AccessToken.findOne({
+    _id: token
+  });
+  return doc !== null ? doc.active : false;
+}
