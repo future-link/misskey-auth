@@ -1,7 +1,7 @@
 import * as koa from "koa";
 import getUser from "../../utils/get-user";
 import { getParamAsString } from "../../utils/get-param";
-import apps from "../../models/application";
+import * as apps from "../../models/application";
 
 export default async function(ctx: koa.Context) {
   const body = ctx.request.body;
