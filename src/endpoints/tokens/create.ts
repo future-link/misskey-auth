@@ -2,7 +2,7 @@ import * as koa from "koa";
 import { ResponseError } from "../../utils/error";
 import parseAuthHeader, { BasicAuthorizationHeader } from "../../utils/parse-authorization-header";
 import { getParamSource, getParamAsString } from "../../utils/get-param";
-import tokens from "../../models/token";
+import * as tokens from "../../models/token";
 
 export default async function create(ctx: koa.Context) {
   const grantType = getParamAsString(getParamSource(ctx), "grant_type");

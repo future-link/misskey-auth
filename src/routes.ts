@@ -40,12 +40,6 @@ const endpoints: Endpoint[] = [
     path: "/tokens/create",
     file: "/tokens/create",
   },
-
-  {
-    method: "GET",
-    path: "/test",
-    file: "/test",
-  },
 ];
 
 const router = new Router();

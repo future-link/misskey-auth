@@ -1,6 +1,6 @@
 import * as koa from "koa";
 import { getParamAsString } from "../../utils/get-param";
-import apps from "../../models/application";
+import * as apps from "../../models/application";
 
 export default async function destroy(ctx: koa.Context) {
   const body = ctx.request.body;
