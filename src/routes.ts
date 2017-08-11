@@ -60,9 +60,15 @@ endpoints.forEach((endpoint) => {
     // hide internal endpoints & require internal passkey based authentication.
     if (endpoint.internal) {
       const token = await parseAutorizationHeader(ctx.headers.authorization);
-      if (token.kind !== "internal") return await next();
+      if (token.kind !== "internal") {
+        await next();
+        return;
+      }
       const tokenDoc = token.doc as InternalAuthorizationHeader;
-      if (tokenDoc.passkey !== config.passkey) return await next();
+      if (tokenDoc.passkey !== config.passkey) {
+        await next();
+        return;
+      }
     }
     await handler(ctx);
   };
