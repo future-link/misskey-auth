@@ -1,8 +1,8 @@
 import { ResponseError } from "./error";
 
 export interface AuthorizationHeader {
-  kind: "basic"|"bearer";
-  doc: BasicAuthorizationHeader|BearerAuthorizationHeader;
+  kind: "basic"|"bearer"|"internal";
+  doc: BasicAuthorizationHeader|BearerAuthorizationHeader|InternalAuthorizationHeader;
 }
 
 export interface BasicAuthorizationHeader {
@@ -12,6 +12,10 @@ export interface BasicAuthorizationHeader {
 
 export interface BearerAuthorizationHeader {
   token: string;
+}
+
+export interface InternalAuthorizationHeader {
+  passkey: string;
 }
 
 export default async function parseAutorizationHeader(header: string): Promise<AuthorizationHeader> {
@@ -33,6 +37,13 @@ export default async function parseAutorizationHeader(header: string): Promise<A
           kind: "bearer",
           doc: {
             token: data,
+          },
+        };
+      case "internal":
+        return {
+          kind: "internal",
+          doc: {
+            passkey: data,
           },
         };
 
