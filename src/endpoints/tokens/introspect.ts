@@ -1,16 +1,13 @@
 import * as koa from "koa";
 import * as tokens from "../../models/token";
-
-interface IntrospectResponse {
-  active: boolean;
-}
+import { TokenResponce, IntrospectResponse } from "./interfaces";
 
 export default async function introspect(ctx: koa.Context) {
-  const token = ctx.request.body.token;
-  if (!token) {
+  if (!ctx.request.body.token) {
     ctx.throw(500, ":fu:");
   }
+  const token = ctx.request.body.token as TokenResponce;
   ctx.body = {
-    active: await tokens.check(token),
+    active: await tokens.validate(token),
   } as IntrospectResponse;
 }

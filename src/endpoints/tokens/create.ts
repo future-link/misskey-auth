@@ -3,6 +3,7 @@ import { ResponseError } from "../../utils/error";
 import parseAuthHeader, { BasicAuthorizationHeader } from "../../utils/parse-authorization-header";
 import { getParamSource, getParamAsString } from "../../utils/get-param";
 import * as tokens from "../../models/token";
+import { TokenResponce } from "./interfaces";
 
 export default async function create(ctx: koa.Context) {
   const grantType = getParamAsString(getParamSource(ctx), "grant_type");
@@ -15,11 +16,6 @@ export default async function create(ctx: koa.Context) {
     default:
       throw new ResponseError("unsupported_grant_type", `'${grantType}' is unsupported`);
   }
-}
-
-interface TokenResponce {
-  access_token: string;
-  token_type: string;
 }
 
 async function resourceOwnerPasswordCredentialGrant(ctx: koa.Context): Promise<TokenResponce> {
