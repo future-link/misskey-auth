@@ -5,6 +5,21 @@ HOST: http://polls.apiblueprint.org/
 
 A misskey authz server api
 
+# Data Structures
+##Error(object)
++ `error` (string, required) - an error type
++ `description` (string, required) - a description of error
++ `uri` (string, optional) - a help uri
+
+##Application(object)
++ `name`: test (string, required) - an application's name
++ `description`: description (string, required) - an application's description
++ `isPublicClient`: false (boolean, required)
++ `createdAt`: `2017-06-05T09:45:06.537Z` (string, required) - a timestamp which an application created
++ `userId`: 592f9a3d44c65921e47469c7 (string, required) - an id of a user who created an application
++ `id` : 59352822ecdf2b257d4c7949 (string, required) - an application's id(app-id)
++ `secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, optional) - an application-secret(app-secret)
+
 ## Create a New Application [/apps/create]
 Create a new application using user's credential.
 
@@ -19,14 +34,11 @@ Create a new application using user's credential.
         + `callback-url`: http://url.com/path/to/callback (string, optional) - a callback URL
 
 + Response 201 (application/json)
-    + Attributes
-        + `name`: test (string, required) - an application's name
-        + `description`: description (string, required) - an application's description
-        + `isPublicClient`: false (boolean, required)
-        + `createdAt`: `2017-06-05T09:45:06.537Z` (string, required) - a timestamp which an application created
-        + `userId`: 592f9a3d44c65921e47469c7 (string, required) - an id of a user who created an application
-        + `id` : 59352822ecdf2b257d4c7949 (string, required) - an application's id(app-id)
-        + `secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, required) - an application-secret(app-secret)
+    + Attributes(Application)
+        
+        
++ Response 400 (application/json)
+    + Attributes(Error)
 
 
 ## Destroy an Application [/apps/destroy]
@@ -39,6 +51,9 @@ Create a new application using user's credential.
         + `app-secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, required) - an application-secret
         
 + Response 200 (application/json)
+
++ Response 400 (application/json)
+    + Attributes(Error)
 
 
 ## Show application's information [/apps/show]
@@ -57,14 +72,10 @@ if you want to get `secret`, you need to authorize using `app-secret` or user's 
                 + `password`: password (string)- a user's password
 
 + Response 200 (application/json)
-    + Attributes
-        + `name`: test (string, required) - an application's name
-        + `description`: description (string, required) - an application's description
-        + `isPublicClient`: false (boolean, required)
-        + `createdAt`: `2017-06-05T09:45:06.537Z` (string, required) - a timestamp which an application created
-        + `userId`: 592f9a3d44c65921e47469c7 (string, required) - an id of a user who created an application
-        + `id` : 59352822ecdf2b257d4c7949 (string, required) - an application's id(app-id)
-        + `secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, required) - an application-secret(app-secret)
+    + Attributes(Application)
+    
++ Response 400 (application/json)
+    + Attributes(Error)
 
 
 ## Search applications [/apps/search]
@@ -78,10 +89,45 @@ Search applications using a user's id.
         
 + Response 200 (application/json)
     + Attributes (array)
-        + (object)
-            + `name`: test (string, required) - an application's name
-            + `description`: description (string, required) - an application's description
-            + `isPublicClient`: false (boolean, required)
-            + `createdAt`: `2017-06-05T09:45:06.537Z` (string, required) - a timestamp which an application created
-            + `userId`: 592f9a3d44c65921e47469c7 (string, required) - an id of a user who created an application
-            + `id` : 59352822ecdf2b257d4c7949 (string, required) - an application's id(app-id)
+        + (Application)
+        
++ Response 400 (application/json)
+    + Attributes(Error)
+            
+
+## Create a new token [/tokens/create]
+
+### Resource Owner Password Credential Grant [POST]
+
++ Request (application/json)
+    + Attributes
+        + `grant_type`: password (string, required) - a grant type(MUST be 'password'.)
+        + `client_id`: 59352822ecdf2b257d4c7949 (string, required) - an application's id
+        + `client_secret`: Oxw1tH4PvQqTdRz4HSe36JeceeEb0VqWnJSiJA3kjdU= (string, required) - an application-secret
+        + `username`: john (string, required) - a user's screenname
+        + `password`: kanikani1192 (string, required) - a user's password
+        
++ Response 200 (application/json)
+    + Attributes
+        + `access_token`: jwt.formatted.token (string) - an access token
+        + `token_type`: bearer (string) - a token type(always 'bearer')
+        
++ Response 400 (application/json)
+    + Attributes(Error)
+
++ Response 401 (application/json)
+    + Attributes(Error)
+
+
+## Introspect tokens [/tokens/introspect]
+This is INTERNAL endpoint.
+
+### POST [POST]
+
++ Request (application/json)
+    + Attributes
+        + `token`: jwt.formatted.token(string, required) - token
+        
++ Response 200 (application/json)
+    + Attributes
+        + `active`: true (boolean, required)
