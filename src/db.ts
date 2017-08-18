@@ -5,20 +5,19 @@ import { systemLogger } from "./logger";
 // use native promise
 (mongoose as { Promise: any }).Promise = global.Promise;
 
-let opts: object|undefined;
+let opts = {
+  useMongoClient: true,
+};
 if (config.mongo.options !== undefined) {
-  opts = {
-    user: config.mongo.options.user,
-    pass: config.mongo.options.password,
-  };
+  opts = Object.assign(opts, config.mongo.options);
 }
-mongoose.connect(config.mongo.uri, opts, (err) => {
-  if (err == null) {
+mongoose.connect(config.mongo.uri, opts)
+  .then(() => {
     systemLogger.info(`Success to connent mongodb: ${config.mongo.uri}`);
-  } else {
+  })
+  .catch((err) => {
     systemLogger.fatal(err.stack || `${err.name}: ${err.message}`);
-  }
-});
+  });
 
 import application from "./db-models/application";
 export const Application = application;
