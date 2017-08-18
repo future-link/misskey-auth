@@ -1,2 +1,2 @@
 # misskey-auth
-OAuth2 authenticate server of misskey-delta
+OAuth2 authz server for misskey-delta
