@@ -15,12 +15,17 @@ config.jws.publicKey = fs.readFileSync(path.join(homeDir, configDirName, config.
 config.jws.secretKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.secretKeyFile), "utf8");
 export default config;
 
-export interface Config {
+export type Config = ConfigFile & {
+  jws: {
+    secretKey: string;
+    publicKey: string;
+  };
+};
+
+interface ConfigFile {
   jws: {
     algorithm: string;
-    secretKey: string;
     secretKeyFile: string;
-    publicKey: string;
     publicKeyFile: string;
   };
   mongo: {
