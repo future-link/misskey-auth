@@ -1,11 +1,14 @@
 import * as koa from "koa";
 import * as Router from "koa-router";
 import { accessLogger } from "./logger";
+import parseAutorizationHeader, {InternalAuthorizationHeader} from "./utils/parse-authorization-header";
+import config from "./config";
 
 interface Endpoint {
   method: "GET"|"POST";
   path: string;
   file: string;
+  internal?: boolean;
 }
 
 const endpoints: Endpoint[] = [
@@ -45,23 +48,42 @@ const endpoints: Endpoint[] = [
     path: "/tokens/create",
     file: "/tokens/create",
   },
+  {
+    method: "POST",
+    path: "/tokens/introspect",
+    file: "/tokens/introspect",
+    internal: true,
+  },
 ];
 
 const router = new Router();
-endpoints.forEach((a) => {
-  let handler = require(`./endpoints${a.file}`);
+endpoints.forEach((endpoint) => {
+  let handler = require(`./endpoints${endpoint.file}`);
   handler = handler.default || handler;
   const handlerFunction = async (ctx: koa.Context, next) => {
-    accessLogger.info(`${a.method} ${a.path}`);
+    accessLogger.info(`${endpoint.method} ${endpoint.path}`);
+    // hide internal endpoints & require internal passkey based authentication.
+    if (endpoint.internal) {
+      const token = await parseAutorizationHeader(ctx.headers.authorization);
+      if (token.kind !== "internal") {
+        await next();
+        return;
+      }
+      const tokenDoc = token.doc as InternalAuthorizationHeader;
+      if (tokenDoc.passkey !== config.passkey) {
+        await next();
+        return;
+      }
+    }
     await handler(ctx);
   };
 
-  switch (a.method) {
+  switch (endpoint.method) {
     case "GET":
-      router.get(a.path, handlerFunction);
+      router.get(endpoint.path, handlerFunction);
       break;
     case "POST":
-      router.post(a.path, handlerFunction);
+      router.post(endpoint.path, handlerFunction);
       break;
   }
 });

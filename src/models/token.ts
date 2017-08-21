@@ -5,6 +5,7 @@ import { ResponseError } from "../utils/error";
 import getUser from "../utils/get-user";
 import config from "../config";
 import jws = require("jws");
+import { TokenResponce } from "../endpoints/tokens/interfaces";
 
 async function create(
   userId: string,
@@ -54,4 +55,9 @@ export function sign(token: AccessTokenDocument): string {
     },
     secret: config.jws.secretKey,
   });
+}
+
+export async function validate(token: TokenResponce): Promise<boolean> {
+  const doc = await AccessToken.findById(token.access_token);
+  return doc !== null ? doc.active : false;
 }
