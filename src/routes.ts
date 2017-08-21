@@ -10,6 +10,11 @@ interface Endpoint {
 
 const endpoints: Endpoint[] = [
   {
+    method: "GET",
+    path: "/cert",
+    file: "/cert",
+  },
+  {
     method: "POST",
     path: "/apps/create",
     file: "/apps/create",
