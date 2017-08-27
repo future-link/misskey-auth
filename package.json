@@ -5,9 +5,14 @@
   "main": "dest/index.js",
   "scripts": {
     "start": "node dest/index.js",
-    "build": "gulp build",
-    "watch": "gulp build; gulp watch & node-dev dest/index.js",
-    "lint": "gulp lint"
+    "build": "run-p build:*",
+    "build:ts": "tsc",
+    "lint": "run-p lint:*",
+    "lint:ts": "tslint -p .",
+    "watch": "run-s build watch-run",
+    "watch-run": "run-p watch:*",
+    "watch:start": "node-dev dest/index.js",
+    "watch:ts": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -45,12 +50,8 @@
     "@types/mongoose": "^4.7.11",
     "@types/redis": "^2.6.0",
     "@types/request-promise-native": "^1.0.5",
-    "gulp": "^3.9.1",
-    "gulp-cli": "^1.3.0",
-    "gulp-pug": "^3.3.0",
-    "gulp-tslint": "^8.0.0",
-    "gulp-typescript": "^3.1.6",
     "node-dev": "^3.1.3",
+    "npm-run-all": "^4.0.2",
     "tslint": "^5.1.0",
     "typescript": "^2.3.2"
   }
