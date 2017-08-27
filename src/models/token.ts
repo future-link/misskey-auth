@@ -55,3 +55,18 @@ export function sign(token: AccessTokenDocument): string {
     secret: config.jws.secretKey,
   });
 }
+
+export async function isValidToken(token: string): Promise<boolean> {
+  if (!jws.verify(token, config.jws.algorithm, config.jws.publicKey)) {
+    return false;
+  }
+
+  const payload = JSON.parse(jws.decode(token).payload);
+
+  try {
+    return await AccessToken.findById(payload.token_id)
+                  .then((a) => a !== null ? a.active : false);
+  } catch (err) {
+    return false;
+  }
+}

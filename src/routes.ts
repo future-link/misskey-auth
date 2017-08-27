@@ -45,6 +45,12 @@ const endpoints: Endpoint[] = [
     path: "/tokens/create",
     file: "/tokens/create",
   },
+
+  {
+    method: "POST",
+    path: "/tokens/introspect",
+    file: "/tokens/introspect",
+  },
 ];
 
 const router = new Router();
