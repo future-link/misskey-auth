@@ -30,6 +30,7 @@
     "koa-router": "^7.1.1",
     "log4js": "^1.1.1",
     "mongoose": "^4.9.7",
+    "pem-jwk": "^1.5.1",
     "pug": "^2.0.0-beta.12",
     "redis": "^2.7.1",
     "request": "^2.81.0",

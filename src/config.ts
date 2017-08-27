@@ -16,6 +16,7 @@ config.jws.secretKey = fs.readFileSync(path.join(homeDir, configDirName, config.
 export default config;
 
 export type Config = ConfigFile & {
+  passkey: string;
   jws: {
     secretKey: string;
     publicKey: string;
