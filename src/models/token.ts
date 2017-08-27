@@ -30,7 +30,7 @@ export async function createUsingPassword(
   );
 
   // Is app 'confidential' client?
-  if (app.isPublicClient) {
+  if (app.clientType !== "confidential") {
     throw new ResponseError("unauthorized_client", "client must be 'confidential' on 'password' grant");
   }
   if (app.secret !== appSecret) {

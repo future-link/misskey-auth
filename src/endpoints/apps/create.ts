@@ -17,7 +17,7 @@ export default async function(ctx: koa.Context) {
     user.id,
     description,
     callbackURL,
-    true,
+    "public",
   );
   ctx.status = 201;
 }
