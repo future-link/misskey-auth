@@ -1,5 +1,5 @@
 import { Application } from "../db";
-import { ApplicationDocument } from "../db-models/application";
+import { ApplicationDocument, ClientType } from "../db-models/application";
 import * as crypto from "crypto";
 import { ResponseError } from "../utils/error";
 
@@ -8,7 +8,7 @@ export async function create(
   userId: string,
   description: string,
   callbackURL: string|undefined,
-  isPublicClient: boolean = true,
+  clientType: ClientType = "public",
 ): Promise<ApplicationDocument> {
   if ((await Application.findOne({name: appName, userId})) != null) {
     throw new ResponseError("invalid_request", "you have already registered same application");
@@ -22,7 +22,7 @@ export async function create(
 
   app.description = description;
   app.callbackURL = callbackURL;
-  app.isPublicClient = isPublicClient;
+  app.clientType = clientType;
 
   return (await app.save()).toObject() as ApplicationDocument;
 }

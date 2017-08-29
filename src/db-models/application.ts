@@ -13,9 +13,9 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  isPublicClient: {
-    type: Boolean,
-    default: false,
+  clientType: {
+    type: String,
+    default: "public",
   },
 });
 
@@ -27,7 +27,9 @@ export interface ApplicationDocument extends mongoose.Document {
   createdAt: string;
   description: string;
   callbackURL: string|undefined;
-  isPublicClient: boolean;
+  clientType: ClientType;
 }
+
+export type ClientType = "public"|"confidential";
 
 export default mongoose.model<ApplicationDocument>("Application", applicationSchema);
