@@ -1,7 +1,7 @@
 {
   "name": "misskey-auth",
   "version": "1.0.0",
-  "description": "OAuth2 authenticate server of misskey-delta",
+  "description": "OAuth2 authz server for misskey-delta",
   "main": "dest/index.js",
   "scripts": {
     "start": "node dest/index.js",
