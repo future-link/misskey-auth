@@ -39,14 +39,17 @@ export async function destroy(appId: string, appSecret: string): Promise<void> {
   await Application.remove({_id: appId});
 }
 
-export async function show(id: string): Promise<ApplicationDocument> {
-  const app = await Application.findById(id);
+export async function show(id: string, withSecret: boolean = false): Promise<ApplicationDocument> {
+  const projection = withSecret ? {} : { secret: false };
+  const app = await Application.findById(id, projection);
   if (app == null) {
     throw new ResponseError("not_found", "application not found");
   }
   return app.toObject() as ApplicationDocument;
 }
 
-export async function search(userId: string): Promise<ApplicationDocument[]> {
-  return (await Application.find({userId})).map((a) => a.toObject() as ApplicationDocument);
+export async function search(userId: string, withSecret: boolean = false): Promise<ApplicationDocument[]> {
+  const projection = withSecret ? {} : { secret: false };
+  return (await Application.find({ userId }, projection))
+          .map((a) => a.toObject() as ApplicationDocument);
 }
