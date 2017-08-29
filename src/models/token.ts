@@ -4,7 +4,7 @@ import * as Application from "./application";
 import { ResponseError } from "../utils/error";
 import getUser from "../utils/get-user";
 import config from "../config";
-import jws = require("jws");
+import * as jwt from "jsonwebtoken";
 
 async function create(
   userId: string,
@@ -45,23 +45,22 @@ export async function createUsingPassword(
 }
 
 export function sign(token: AccessTokenDocument): string {
-  return jws.sign({
-    header: { alg: config.jws.algorithm },
-    payload: {
+  return jwt.sign({
       sub: token.userId,
       token_id: token._id,
       aud: token.appId,
     },
-    secret: config.jws.secretKey,
-  });
+    config.jws.secretKey,
+    { algorithm: config.jws.algorithm },
+  );
 }
 
 export async function isValidToken(token: string): Promise<boolean> {
-  if (!jws.verify(token, config.jws.algorithm, config.jws.publicKey)) {
+  if (!jwt.verify(token, config.jws.publicKey, { algorithms: [config.jws.algorithm] })) {
     return false;
   }
 
-  const payload = JSON.parse(jws.decode(token).payload);
+  const payload = jwt.decode(token, { json: true }) as any;
 
   try {
     return await AccessToken.findById(payload.token_id)
