@@ -4,7 +4,10 @@ const applicationSchema = new mongoose.Schema({
   name: String,
   userId: String,
   secret: String,
-  createdAt: Date,
+  createdAt: {
+    type: Date,
+    default: () => new Date(Date.now()),
+  },
   description: {
     type: String,
     default: "",

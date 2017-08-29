@@ -78,7 +78,8 @@ async function contentChecker(ctx: koa.Context, next) {
     await next();
     return;
   }
-  if (contentType === "application/json" || contentType === "application/x-www-form-urlencoded") {
+
+  if (/^\s*application\/(json|x-www-urlencoded)\s*(;|$)/i.test(contentType || "")) {
     await next();
     return;
   }

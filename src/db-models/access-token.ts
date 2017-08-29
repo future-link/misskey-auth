@@ -4,7 +4,10 @@ const accessTokenSchema = new mongoose.Schema({
   userId: String,
   appId: String,
   active: Boolean,
-  createdAt: Date,
+  createdAt: {
+    type: Date,
+    default: () => new Date(Date.now()),
+  },
 });
 
 export interface AccessTokenDocument extends mongoose.Document {
