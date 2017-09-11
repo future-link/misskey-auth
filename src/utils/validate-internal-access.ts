@@ -1,8 +1,12 @@
 import { ResponseError } from "./error";
-import parseAuthorizationHeader, { InternalAuthorizationHeader } from "./parse-authorization-header";
+import parseAuthorizationHeader, {
+  InternalAuthorizationHeader
+} from "./parse-authorization-header";
 
-export default async function validateInternalAccess(header: any): Promise<boolean> {
-  const authorization: string|undefined = header.authorization;
+export default async function validateInternalAccess(
+  header: any
+): Promise<boolean> {
+  const authorization: string | undefined = header.authorization;
   if (authorization === undefined) {
     throw new ResponseError("invalid_request", "internal endpoint");
   }

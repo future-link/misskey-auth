@@ -11,6 +11,6 @@ export default async function introspect(ctx: koa.Context) {
   const token = getParamAsString(source, "token");
 
   ctx.body = {
-    active: await tokens.isValidToken(token),
+    active: await tokens.isValidToken(token)
   };
 }

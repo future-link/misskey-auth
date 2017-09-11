@@ -16,7 +16,9 @@ export default async function show(ctx: koa.Context) {
       ctx.body = app;
       return;
     } else {
-      throw new ResponseError("invalid_request", "invalid secret").setStatus(401);
+      throw new ResponseError("invalid_request", "invalid secret").setStatus(
+        401
+      );
     }
   }
   if (body["screen-name"] !== undefined || body.password !== undefined) {

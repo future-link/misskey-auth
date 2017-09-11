@@ -6,16 +6,17 @@ import { systemLogger } from "./logger";
 (mongoose as { Promise: any }).Promise = global.Promise;
 
 let opts = {
-  useMongoClient: true,
+  useMongoClient: true
 };
 if (config.mongo.options !== undefined) {
   opts = Object.assign(opts, config.mongo.options);
 }
-mongoose.connect(config.mongo.uri, opts)
+mongoose
+  .connect(config.mongo.uri, opts)
   .then(() => {
     systemLogger.info(`Success to connent mongodb: ${config.mongo.uri}`);
   })
-  .catch((err) => {
+  .catch(err => {
     systemLogger.fatal(err.stack || `${err.name}: ${err.message}`);
   });
 

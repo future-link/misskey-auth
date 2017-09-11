@@ -9,6 +9,9 @@
     "build:ts": "tsc",
     "lint": "run-p lint:*",
     "lint:ts": "tslint -p .",
+    "fmt": "run-p fmt:*",
+    "fmt:ts": "prettier --write 'src/**/*.ts' --parser=typescript",
+    "fmt:json": "prettier --write *.json --parser=json",
     "watch": "run-s build watch-run",
     "watch-run": "run-p watch:*",
     "watch:start": "node-dev dest/index.js",
@@ -18,9 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/Tosuke/misskey-auth.git"
   },
-  "keywords": [
-    "oauth2"
-  ],
+  "keywords": ["oauth2"],
   "author": "tosuke",
   "license": "MIT",
   "bugs": {
@@ -53,7 +54,9 @@
     "@types/request-promise-native": "^1.0.5",
     "node-dev": "^3.1.3",
     "npm-run-all": "^4.0.2",
+    "prettier": "^1.6.1",
     "tslint": "^5.1.0",
+    "tslint-config-prettier": "^1.5.0",
     "typescript": "^2.3.2"
   }
 }

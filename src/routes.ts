@@ -3,7 +3,7 @@ import * as Router from "koa-router";
 import { accessLogger } from "./logger";
 
 interface Endpoint {
-  method: "GET"|"POST";
+  method: "GET" | "POST";
   path: string;
   file: string;
 }
@@ -12,49 +12,49 @@ const endpoints: Endpoint[] = [
   {
     method: "GET",
     path: "/cert",
-    file: "/cert",
+    file: "/cert"
   },
   {
     method: "POST",
     path: "/apps/create",
-    file: "/apps/create",
+    file: "/apps/create"
   },
   {
     method: "POST",
     path: "/apps/destroy",
-    file: "/apps/destroy",
+    file: "/apps/destroy"
   },
   {
     method: "POST",
     path: "/apps/show",
-    file: "/apps/show",
+    file: "/apps/show"
   },
   {
     method: "POST",
     path: "/apps/search",
-    file: "/apps/search",
+    file: "/apps/search"
   },
 
   {
     method: "GET",
     path: "/tokens/create",
-    file: "/tokens/create",
+    file: "/tokens/create"
   },
   {
     method: "POST",
     path: "/tokens/create",
-    file: "/tokens/create",
+    file: "/tokens/create"
   },
 
   {
     method: "POST",
     path: "/tokens/introspect",
-    file: "/tokens/introspect",
-  },
+    file: "/tokens/introspect"
+  }
 ];
 
 const router = new Router();
-endpoints.forEach((a) => {
+endpoints.forEach(a => {
   let handler = require(`./endpoints${a.file}`);
   handler = handler.default || handler;
   const handlerFunction = async (ctx: koa.Context, next) => {

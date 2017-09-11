@@ -11,8 +11,14 @@ const homeDir = process.env[
 
 const configPath = path.join(homeDir, configDirName, configFileName);
 const config = require(configPath) as Config;
-config.jws.publicKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.publicKeyFile), "utf8");
-config.jws.secretKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.secretKeyFile), "utf8");
+config.jws.publicKey = fs.readFileSync(
+  path.join(homeDir, configDirName, config.jws.publicKeyFile),
+  "utf8"
+);
+config.jws.secretKey = fs.readFileSync(
+  path.join(homeDir, configDirName, config.jws.secretKeyFile),
+  "utf8"
+);
 export default config;
 
 export type Config = ConfigFile & {
@@ -34,7 +40,7 @@ interface ConfigFile {
     options?: {
       user: string;
       password: string;
-    }
+    };
   };
   logger: log4js.IConfig;
   apiServer: {
