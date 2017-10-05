@@ -7,16 +7,16 @@ const applicationSchema = new mongoose.Schema({
   createdAt: String,
   description: {
     type: String,
-    default: "",
+    default: ""
   },
   callbackURL: {
     type: String,
-    required: false,
+    required: false
   },
   clientType: {
     type: String,
-    default: "public",
-  },
+    default: "public"
+  }
 });
 
 export interface ApplicationDocument extends mongoose.Document {
@@ -26,10 +26,13 @@ export interface ApplicationDocument extends mongoose.Document {
   secret: string;
   createdAt: string;
   description: string;
-  callbackURL: string|undefined;
+  callbackURL: string | undefined;
   clientType: ClientType;
 }
 
-export type ClientType = "public"|"confidential";
+export type ClientType = "public" | "confidential";
 
-export default mongoose.model<ApplicationDocument>("Application", applicationSchema);
+export default mongoose.model<ApplicationDocument>(
+  "Application",
+  applicationSchema
+);

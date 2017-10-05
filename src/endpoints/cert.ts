@@ -6,7 +6,7 @@ export default async function cert(ctx: koa.Context) {
   let jwk = pem2jwk(config.jws.publicKey);
   jwk = Object.assign(jwk, {
     use: "sig",
-    alg: config.jws.algorithm,
+    alg: config.jws.algorithm
   });
 
   ctx.body = jwk;

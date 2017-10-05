@@ -7,11 +7,14 @@ export async function create(
   appName: string,
   userId: string,
   description: string,
-  callbackURL: string|undefined,
-  clientType: ClientType = "public",
+  callbackURL: string | undefined,
+  clientType: ClientType = "public"
 ): Promise<ApplicationDocument> {
-  if ((await Application.findOne({name: appName, userId})) != null) {
-    throw new ResponseError("invalid_request", "you have already registered same application");
+  if ((await Application.findOne({ name: appName, userId })) != null) {
+    throw new ResponseError(
+      "invalid_request",
+      "you have already registered same application"
+    );
   }
 
   const app = new Application();
@@ -36,10 +39,13 @@ export async function destroy(appId: string, appSecret: string): Promise<void> {
     throw new ResponseError("invalid_request", "invalid secret");
   }
 
-  await Application.remove({_id: appId});
+  await Application.remove({ _id: appId });
 }
 
-export async function show(id: string, withSecret: boolean = false): Promise<ApplicationDocument> {
+export async function show(
+  id: string,
+  withSecret: boolean = false
+): Promise<ApplicationDocument> {
   const projection = withSecret ? {} : { secret: false };
   const app = await Application.findById(id, projection);
   if (app == null) {
@@ -48,8 +54,12 @@ export async function show(id: string, withSecret: boolean = false): Promise<App
   return app.toObject() as ApplicationDocument;
 }
 
-export async function search(userId: string, withSecret: boolean = false): Promise<ApplicationDocument[]> {
+export async function search(
+  userId: string,
+  withSecret: boolean = false
+): Promise<ApplicationDocument[]> {
   const projection = withSecret ? {} : { secret: false };
-  return (await Application.find({ userId }, projection))
-          .map((a) => a.toObject() as ApplicationDocument);
+  return (await Application.find({ userId }, projection)).map(
+    a => a.toObject() as ApplicationDocument
+  );
 }
