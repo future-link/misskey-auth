@@ -11,9 +11,11 @@ app
   .use(bodyParser())
   .use(contentChecker)
   .use(router.routes())
-  .use(router.allowedMethods({
-    throw: true,
-  }));
+  .use(
+    router.allowedMethods({
+      throw: true
+    })
+  );
 app.listen(3001);
 
 async function errorHandler(ctx: koa.Context, next) {
@@ -25,7 +27,7 @@ async function errorHandler(ctx: koa.Context, next) {
       ctx.body = {
         error: e.error,
         description: e.description,
-        uri: e.uri,
+        uri: e.uri
       };
     } else {
       if (e instanceof Error) {
@@ -34,7 +36,7 @@ async function errorHandler(ctx: koa.Context, next) {
 
       ctx.status = 500;
       ctx.body = {
-        error: e.message || "Internal Server Error",
+        error: e.message || "Internal Server Error"
       };
     }
   }
@@ -55,13 +57,13 @@ async function responseFormatter(ctx: koa.Context, next) {
     return obj;
   };
 
-  if (typeof(body) === "object") {
+  if (typeof body === "object") {
     body = f(body);
   }
 
   if (body instanceof Array) {
-    body = body.map((a) => {
-      if (typeof(a) === "object") {
+    body = body.map(a => {
+      if (typeof a === "object") {
         return f(a);
       } else {
         return a;
@@ -73,13 +75,15 @@ async function responseFormatter(ctx: koa.Context, next) {
 }
 
 async function contentChecker(ctx: koa.Context, next) {
-  const contentType: string|undefined = ctx.header["content-type"];
+  const contentType: string | undefined = ctx.header["content-type"];
   if (ctx.request.method !== "POST") {
     await next();
     return;
   }
-
-  if (/^\s*application\/(json|x-www-urlencoded)\s*(;|$)/i.test(contentType || "")) {
+  if (
+    contentType === "application/json" ||
+    contentType === "application/x-www-form-urlencoded"
+  ) {
     await next();
     return;
   }

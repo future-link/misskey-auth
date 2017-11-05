@@ -11,17 +11,28 @@ const homeDir = process.env[
 
 const configPath = path.join(homeDir, configDirName, configFileName);
 const config = require(configPath) as Config;
-config.jws.publicKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.publicKeyFile), "utf8");
-config.jws.secretKey = fs.readFileSync(path.join(homeDir, configDirName, config.jws.secretKeyFile), "utf8");
+config.jws.publicKey = fs.readFileSync(
+  path.join(homeDir, configDirName, config.jws.publicKeyFile),
+  "utf8"
+);
+config.jws.secretKey = fs.readFileSync(
+  path.join(homeDir, configDirName, config.jws.secretKeyFile),
+  "utf8"
+);
 export default config;
 
-export interface Config {
+export type Config = ConfigFile & {
   passkey: string;
   jws: {
-    algorithm: string;
     secretKey: string;
-    secretKeyFile: string;
     publicKey: string;
+  };
+};
+
+interface ConfigFile {
+  jws: {
+    algorithm: string;
+    secretKeyFile: string;
     publicKeyFile: string;
   };
   mongo: {
@@ -29,7 +40,7 @@ export interface Config {
     options?: {
       user: string;
       password: string;
-    }
+    };
   };
   logger: log4js.IConfig;
   apiServer: {
