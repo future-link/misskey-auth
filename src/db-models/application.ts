@@ -6,20 +6,20 @@ const applicationSchema = new mongoose.Schema({
   secret: String,
   createdAt: {
     type: Date,
-    default: () => new Date(Date.now()),
+    default: Date.now
   },
   description: {
     type: String,
-    default: "",
+    default: ""
   },
   callbackURL: {
     type: String,
-    required: false,
+    required: false
   },
   isPublicClient: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 });
 
 export interface ApplicationDocument extends mongoose.Document {
@@ -29,8 +29,11 @@ export interface ApplicationDocument extends mongoose.Document {
   secret: string;
   createdAt: Date;
   description: string;
-  callbackURL: string|undefined;
+  callbackURL: string | undefined;
   isPublicClient: boolean;
 }
 
-export default mongoose.model<ApplicationDocument>("Application", applicationSchema);
+export default mongoose.model<ApplicationDocument>(
+  "Application",
+  applicationSchema
+);
