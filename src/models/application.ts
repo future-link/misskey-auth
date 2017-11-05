@@ -21,7 +21,6 @@ export async function create(
   app.name = appName;
   app.userId = userId;
   app.secret = crypto.randomBytes(32).toString("base64");
-  app.createdAt = new Date().toISOString();
 
   app.description = description;
   app.callbackURL = callbackURL;

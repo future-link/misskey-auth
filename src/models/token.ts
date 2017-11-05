@@ -13,7 +13,6 @@ async function create(
   const token = new AccessToken();
   token.userId = userId;
   token.appId = appId;
-  token.createdAt = new Date().toISOString();
   token.active = true;
 
   return (await token.save()).toObject() as AccessTokenDocument;

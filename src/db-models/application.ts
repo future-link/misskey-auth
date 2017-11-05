@@ -4,7 +4,10 @@ const applicationSchema = new mongoose.Schema({
   name: String,
   userId: String,
   secret: String,
-  createdAt: String,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
   description: {
     type: String,
     default: ""
@@ -24,7 +27,7 @@ export interface ApplicationDocument extends mongoose.Document {
   name: string;
   userId: string;
   secret: string;
-  createdAt: string;
+  createdAt: Date;
   description: string;
   callbackURL: string | undefined;
   clientType: ClientType;
