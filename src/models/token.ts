@@ -24,7 +24,7 @@ export async function createUsingPassword(
   appId: string,
   appSecret: string
 ): Promise<AccessTokenDocument> {
-  const app = await Application.show(appId).catch(err =>
+  const app = await Application.show(appId, true).catch(err =>
     Promise.reject(new ResponseError("invalid_client", "invalid client_id"))
   );
 
@@ -51,7 +51,7 @@ export function sign(token: AccessTokenDocument): string {
     {
       sub: token.userId,
       token_id: token._id,
-      aud: token.appId
+      aud: token.appId,
     },
     config.jws.secretKey,
     { algorithm: config.jws.algorithm }
@@ -61,7 +61,7 @@ export function sign(token: AccessTokenDocument): string {
 export async function isValidToken(token: string): Promise<boolean> {
   if (
     !jwt.verify(token, config.jws.publicKey, {
-      algorithms: [config.jws.algorithm]
+      algorithms: [config.jws.algorithm],
     })
   ) {
     return false;
